@@ -113,6 +113,8 @@ class ReceptionfourController extends Controller
                     $form2 =  $data["prix_ht_lbr/$re->code_prod"];
                     $form4 =  $data["prix_vente/$re->code_prod"];
 
+                    //dd($form4);exit();
+
                     $recupinfoproduit = DB::table('produit')->where([['num_prod','=',$form]])->first();
 
                     //dd($recupinfoproduit);
@@ -140,11 +142,11 @@ class ReceptionfourController extends Controller
 
                             if ($recupinfoproduit->flag_tva_prod == 1){
                                 Produit::where([['num_prod', '=', $form]])->update([
-                                    'prix_ht' => $form4 + ($form4*$tvaval/100),
-                                    'prix_ttc' => $form4,
-                                    'prix_achat_prod' => $prixttc,
-                                    'prix_revient_prod' => $form4 - $prixttc,
-                                    'taux_marque' => ($form4 - $prixttc)/$form4
+                                    'prix_ht' => trim($form4 ),
+                                    //'prix_ttc' => trim($form4),
+                                    'prix_achat_prod' => trim($prixttc),
+                                    'prix_revient_prod' => trim($form4 - $prixttc),
+                                    'taux_marque' => trim(($form4 - $prixttc)/$form4)
                                 ]);
                             }else{
                                 Produit::where([['num_prod', '=', $form]])->update([
@@ -173,8 +175,8 @@ class ReceptionfourController extends Controller
 
                             if ($recupinfoproduit->flag_tva_prod == 1){
                                 Produit::where([['num_prod', '=', $form]])->update([
-                                    'prix_ht' => $form4 + ($form4*$tvaval/100),
-                                    'prix_ttc' => $form4,
+                                    'prix_ht' => $form4,
+                                    //'prix_ttc' => $form4,
                                     'prix_achat_prod' => $form2,
                                     'prix_revient_prod' => $form4 - $form2,
                                     'taux_marque' => ($form4 - $form2)/$form4

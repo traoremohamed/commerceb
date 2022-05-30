@@ -174,6 +174,7 @@ where left (c.code_comc, 1) = 'B'
                 $ligneComCli = DB::table('ligne_com')
                     ->where([['num_prod', '=', $data['num_prod']], ['num_comc', '=', $idComcli]])
                     ->first();
+                //dd($ligneComCli);
                 if (isset($ligneComCli)) {
                     return redirect('/comclient/edit/' . Crypt::UrlCrypt($idComcli))->with('echec', 'Echec : Le produit a déja été saisi ');
                 }
@@ -185,8 +186,9 @@ where left (c.code_comc, 1) = 'B'
                 if ($recupclient->tva_cli == 1){
                     $ligneProduit = DB::table('produit')
                         ->where('num_prod', '=', $data['num_prod'])
-                        ->orWhere('code_barre_prod', '=', $data['code_barre_prod'])
+                        //->orWhere('code_barre_prod', '=', $data['code_barre_prod'])
                         ->first();
+                    //dd($ligneProduit);
                     //($data['num_prod'].$ligneProduit);
                     // Prix de vente normal x (1-Taux de remise (en %)/100) = prix de vente remisé
                     $remisettc = 0;
@@ -211,8 +213,9 @@ where left (c.code_comc, 1) = 'B'
                 }else{
                     $ligneProduit = DB::table('produit')
                         ->where('num_prod', '=', $data['num_prod'])
-                        ->orWhere('code_barre_prod', '=', $data['code_barre_prod'])
+                        //->orWhere('code_barre_prod', '=', $data['code_barre_prod'])
                         ->first();
+                    //dd($ligneProduit);
                     //($data['num_prod'].$ligneProduit);
                     // Prix de vente normal x (1-Taux de remise (en %)/100) = prix de vente remisé
                     $remisettc = 0;
@@ -250,6 +253,164 @@ where left (c.code_comc, 1) = 'B'
                 $camp->tot_ht_lcomc = trim($prxRemiseht) * trim($data['qte_lcomc']);
                 $camp->tot_tva_lcomc = trim($prxRemisetva) * trim($data['qte_lcomc']);
                 $camp->save();
+
+                return redirect('/comclient/edit/' . Crypt::UrlCrypt($idComcli))->with('success', 'Succes : Enregistrement reussi ');
+            }
+
+
+            if ($data['action'] === 'Modifier') {
+                //dd($data);
+                $ligneComCli = DB::table('ligne_com')
+                    ->join('produit', 'ligne_com.num_prod', '=', 'produit.num_prod', 'inner')
+                    ->where('num_comc', '=', $idComcli)
+                    ->get();
+
+                $infosclient = DB::table('commandeclient')
+                    ->join('client','commandeclient.num_cli','client.num_cli')
+                    ->where([['num_comc','=',$idComcli]])
+                    ->first();
+
+                $tva = DB::table('tauxtva')->first();
+                $tvaval = $tva->val_taxe;
+                foreach($ligneComCli as $re):
+
+                    $form =  $data["num_prod/$re->code_prod"];
+                    $form1 =  $data["qte_lcomc/$re->code_prod"];
+                    $form2 =  $data["prix_ht_lcomc/$re->code_prod"];
+                    $form3 =  $data["prix_ttc_lcomc/$re->code_prod"];
+
+                    if ($infosclient->tva_cli == 1){
+
+
+                        $lignecomclientrecp = DB::table('ligne_com')
+                            ->join('produit','ligne_com.num_prod', 'produit.num_prod')
+                            ->where([['produit.code_prod','=',$re->code_prod],['ligne_com.num_comc','=',$idComcli]])
+                            ->first();
+
+                        if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
+
+                            $prixttc = $form3;
+
+                            $prixht = $prixttc - (trim($prixttc)*$tvaval/100);
+
+
+
+                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                            //$camp->prix_ttc_lcomfour = $prixttc;
+                            //$camp->prix_tva_lcomfour =
+
+                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                'qte_lcomc' => $form1,
+                                'prix_ht_lcomc' => trim($prixht),
+                                'prix_ttc_lcomc' => trim($prixttc),
+                                'prix_tva_lcomc' =>  trim($prixttc*$tvaval/100),
+                                'tot_ttc_lcomc' => trim($prixttc * $form1),
+                                'tot_ht_lcomc' => trim($prixht * $form1),
+                                'tot_tva_lcomc' => trim(($prixttc*$tvaval/100) * $form1),
+                            ]);
+
+                        }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
+
+                            $prixttc = trim($form2) + (trim($form2)*$tvaval/100);
+
+
+
+                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                            //$camp->prix_ttc_lcomfour = $prixttc;
+                            //$camp->prix_tva_lcomfour =
+
+                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                'qte_lcomc' => $form1,
+                                'prix_ht_lcomc' => trim($form2),
+                                'prix_ttc_lcomc' => trim($prixttc),
+                                'prix_tva_lcomc' => trim($form2)*$tvaval/100,
+                                'tot_ttc_lcomc' => trim($prixttc * $form1),
+                                'tot_ht_lcomc' => trim($form2 * $form1),
+                                'tot_tva_lcomc' => trim(($form2*$tvaval/100) * $form1),
+                            ]);
+                        }else{
+
+                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                'qte_lcomc' => $form1,
+                                'prix_ht_lcomc' => trim($form2),
+                                'prix_ttc_lcomc' => trim($form3),
+                                'prix_tva_lcomc' => trim($form2)*$tvaval/100,
+                                'tot_ttc_lcomc' => trim($form3) * $form1,
+                                'tot_ht_lcomc' => trim($form2) * $form1,
+                                'tot_tva_lcomc' => (trim($form2)*$tvaval/100) * $form1,
+                            ]);
+                        }
+
+
+
+                    }else{
+
+
+                        $lignecomclientrecp = DB::table('ligne_com')
+                            ->join('produit','ligne_com.num_prod', 'produit.num_prod')
+                            ->where([['produit.code_prod','=',$re->code_prod],['ligne_com.num_comc','=',$idComcli]])
+                            ->first();
+
+                        if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
+
+                            $prixttc = $form3;
+
+                            $prixht = $prixttc - (trim($prixttc)*$tvaval/100);
+
+
+
+                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                            //$camp->prix_ttc_lcomfour = $prixttc;
+                            //$camp->prix_tva_lcomfour =
+
+                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                'qte_lcomc' => $form1,
+                                'prix_ht_lcomc' => trim($prixttc),
+                                'prix_ttc_lcomc' => trim($prixttc),
+                                'prix_tva_lcomc' => 0,
+                                'tot_ttc_lcomc' => trim($prixttc) * $form1,
+                                'tot_ht_lcomc' => trim($prixttc) * $form1,
+                                'tot_tva_lcomc' => 0,
+                            ]);
+
+                        }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
+
+                            $prixttc = trim($form2) + (trim($form2)*$tvaval/100);
+
+
+
+                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                            //$camp->prix_ttc_lcomfour = $prixttc;
+                            //$camp->prix_tva_lcomfour =
+
+                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                'qte_lcomc' => $form1,
+                                'prix_ht_lcomc' => trim($form2),
+                                'prix_ttc_lcomc' => trim($form2),
+                                'prix_tva_lcomc' => 0,
+                                'tot_ttc_lcomc' => trim($form2) * $form1,
+                                'tot_ht_lcomc' => trim($form2) * $form1,
+                                'tot_tva_lcomc' => 0,
+                            ]);
+                        }else{
+
+                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                'qte_lcomc' => $form1,
+                                'prix_ht_lcomc' => trim($form2),
+                                'prix_ttc_lcomc' => trim($form2),
+                                'prix_tva_lcomc' => 0,
+                                'tot_ttc_lcomc' => trim($form2) * $form1,
+                                'tot_ht_lcomc' => trim($form2) * $form1,
+                                'tot_tva_lcomc' => 0,
+                            ]);
+                        }
+
+
+                    }
+
+
+
+                endforeach;
 
                 return redirect('/comclient/edit/' . Crypt::UrlCrypt($idComcli))->with('success', 'Succes : Enregistrement reussi ');
             }

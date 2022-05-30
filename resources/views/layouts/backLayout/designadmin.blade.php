@@ -172,7 +172,7 @@ $couleur = Menu::get_info_couleur();
                     <?php } ?>
                     <!--<img alt="Logo" height="70" src="fontend/images/logo-light.png"/>-->
                     <br>  <h2 style="margin-top: 10px">   <?php if(isset($logo->mot_cle)){
-                            echo $logo->mot_cle;
+                           // echo $logo->mot_cle;
                         } ?></h2>
                 </a>
                 <!--end::Logo-->

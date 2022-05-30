@@ -166,7 +166,8 @@
                                 <th>Total ht</th>
                                 <th>Total tva</th>
                                 <th>Total ttc</th>
-                                <th>Prix de vente unitaire</th>
+                                <th>Prix ht de vente unitaire</th>
+                                <th>Prix ttc de vente unitaire</th>
                                 <th>Action</th>
                             </tr>
 
@@ -198,8 +199,9 @@
                                     <td align="right">{{ number_format($res->tot_tva_lbr,'0',',','.')}}</td>
                                     <td align="right">{{ number_format($res->tot_ttc_lbr,'0',',','.')}}</td>
                                     <td align="right">
-                                        <input type="text" class="form-control" name="prix_vente/{{ $res->code_prod }}" value="{{$res->prix_ttc}}"/>
+                                        <input type="text" class="form-control" name="prix_vente/{{ $res->code_prod }}" value="{{ number_format($res->prix_ht,'0',',','.')}}"/>
                                     </td>
+                                    <td align="right">{{ number_format($res->prix_ttc,'0',',','.')}}</td>
                                     <td align="center">
                                         <?php if($flagValide != true) { ?>
                                       <button type="submit" name="action" value="Modifier" class="btn btn-success btn-xs btn-clean btn-icon">

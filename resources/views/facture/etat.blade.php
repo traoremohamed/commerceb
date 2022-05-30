@@ -2,6 +2,8 @@
 
 use App\Helpers\Menu;
 
+use Carbon\Carbon;
+
 $logo = Menu::get_logo();
 
 ?>
@@ -9,36 +11,54 @@ $logo = Menu::get_logo();
 <html>
 <head>
 <meta charset="utf-8">
-	<title>Facture client</title>
+	<!--<title>Facture client</title>-->
 	<style>
 body {
 	family: Arial, Helvetica ;
 	font-size: 15px;
 }
 </style>
+
 </head>
 
 <body>
+<table style="padding-bottom: 300px">
+
+</table>
+<div class="container">
+    <div style="text-align: right">
+        <h3>date: {{ Carbon::parse($Result->date_cre_fact)->format('d-m-Y') }}</h3>
+    </div>
+    <div class="row" style="text-align: center">
+        <div class="col-lg-6">
+            <h2>Facture N°: {{$Result->code_fact}}</h2>
+        </div>
+        <div class="col-lg-6">
+            <h2> Client : {{$Result->nom_cli .' ' . $Result->prenom_cli}}</h2>
+        </div>
+    </div>
+</div>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tbody>
+  <!--<tbody>
+  <tr style="text-align: center; position: center"></tr>
     <tr>
       <td width="44%" rowspan="7" valign="top">
-      <p>
+      <p>-->
           <?php if(isset($logo->logo_logo)){?>
-              <img alt="Logo" height="100" src="{{ asset('/frontend/logo/'. $logo->logo_logo)}}"/>
+              <!--<img alt="Logo" height="100" src="{{ asset('/frontend/logo/'. $logo->logo_logo)}}"/>-->
           <?php } ?>
-      </p>
+      <!--</p>
       <p>&nbsp;</p></td>
       <td width="13%">&nbsp;</td>
       <td width="13%"><strong>Date </strong></td>
       <td width="2%" align="center">:</td>
-      <td width="28%">{{ $Result->date_cre_fact }}</td>
+      <td width="28%">{{ Carbon::parse($Result->date_cre_fact)->format('d-m-Y') }}</td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td nowrap="nowrap"><strong>Facture N°</strong></td>
-      <td align="center">:</td>
-      <td> <strong>{{$Result->code_fact}} </strong></td>
+      <td><strong>Facture N°</strong></td>
+      <td nowrap="">:</td>
+      <td nowrap="nowrap">{{$Result->code_fact}}</td>
+      <td></td>
     </tr>
     <tr>
       <td rowspan="5">&nbsp;</td>
@@ -46,13 +66,13 @@ body {
         <p>&nbsp;</p></td>
       <td align="center">&nbsp;</td>
       <td>&nbsp;</td>
-    </tr>
-    <tr>
+    </tr>-->
+    <!--<tr>
       <td nowrap="nowrap"><strong>Code Client </strong></td>
       <td align="center">:</td>
       <td>{{ $Result->code_cli }} </td>
-    </tr>
-    <tr>
+    </tr>-->
+    <!--<tr>
       <td><strong>Client </strong></td>
       <td align="center">:</td>
       <td> {{$Result->nom_cli .' ' . $Result->prenom_cli}}</td>
@@ -67,7 +87,7 @@ body {
       <td height="19" align="center">:</td>
       <td>{{$Result->adresse_geo_cli}}</td>
     </tr>
-  </tbody>
+  </tbody>-->
 </table>
 <!--<div align="right">
     <input type="button" name="Submit" value="Imprimer" class="ecran visuel_bouton" onclick="window.print();" />
@@ -107,8 +127,20 @@ body {
           <td align="right"> {{number_format($Result->prix_ht_fact,'0',',','.')}} </td>
         </tr>
         <tr>
-          <td align="right">Tva : </td>
-          <td align="right"> {{number_format($Result->prix_tva_fact,'0',',','.')}} </td>
+            <?php
+            if ($Result->prix_tva_fact == 0){ ?>
+            <td align="right" nowrap="nowrap">Tva 18% <b style="color: firebrick">TVA NON FACTUREE</b> :</td>
+            <td align="right">
+                <?php       $montt = $Result->prix_ht_fact*0.18;
+                echo number_format($montt,'0',',','.');
+                }else{?>
+            <td align="right" nowrap="nowrap">Tva 18% :</td>
+            <td align="right">
+                <?php
+                echo number_format($Result->prix_tva_fact ,'0',',','.');
+                }
+                ?>
+            </td>
         </tr>
         <tr>
           <td align="right">&nbsp;</td>

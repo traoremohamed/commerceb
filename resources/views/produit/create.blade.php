@@ -100,8 +100,8 @@
                                 <span class="form-text text-muted">  </span>
                             </div>
                             <div class="col-lg-4">
-                                <label>Montant ttc :</label>
-                                {!! Form::number('prix_ttc', null, array('placeholder' => 'Montant ttc','class' => 'form-control')) !!}
+                                <label>Montant ht :</label>
+                                {!! Form::number('prix_ht', null, array('placeholder' => 'Montant ht','class' => 'form-control')) !!}
                                 <span class="form-text text-muted">  </span>
                             </div>
                             <div class="col-lg-2">
