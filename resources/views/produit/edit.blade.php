@@ -92,7 +92,8 @@ use Carbon\Carbon;
                             </div>
                             <div class="col-lg-2">
                                 <label>Taux de marque:</label>
-                                {!! Form::text('taux_marque',  $produit->prix_revient_prod/$produit->prix_ttc, ['placeholder' => '0 ','class' => 'form-control','disabled' => 'disabled']) !!}
+                                <?php $tm =0 ; if($produit->prix_ttc!=0) $tm =$produit->prix_revient_prod/$produit->prix_ttc;  ?> 
+                                {!! Form::text('taux_marque', $tm  , ['placeholder' => '0 ','class' => 'form-control','disabled' => 'disabled']) !!}
                                 <span class="form-text text-muted">  </span>
                             </div>
                             <div class="col-lg-4">
@@ -113,8 +114,8 @@ use Carbon\Carbon;
                                 <span class="form-text text-muted">  </span>
                             </div>
                             <div class="col-lg-4">
-                                <label>Montant ttc :</label>
-                                {!! Form::number('prix_ttc', $produit->prix_ttc, array('placeholder' => 'Montant ttc','class' => 'form-control')) !!}
+                                <label>Montant ht :</label>
+                                {!! Form::number('prix_ht', $produit->prix_ht, array('placeholder' => 'Montant ht','class' => 'form-control')) !!}
                                 <span class="form-text text-muted">  </span>
                             </div>
                             <div class="col-lg-2">

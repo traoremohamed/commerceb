@@ -97,7 +97,7 @@
                                     <td>{{ $res->lib_sousfam  }}</td>
                                      <td align="rigth"><?php echo number_format($res->prix_ttc); ?></td>
                                      <td align="rigth"><?php echo number_format($res->prix_ht); ?></td>
-                                     <td>{{ $res->prix_revient_prod / $res->prix_ttc  }}</td>
+                                     <td><?php if($res->prix_ttc !=0 ){ echo  $res->prix_revient_prod / $res->prix_ttc ; }else{ echo '0';} ?></td>
                                     <td align="center">
                                         <?php if($res->flag_tva_prod == 1){ ?>
                                         <span  class="label label-lg font-weight-bold label-success label-inline"> OUI</span>

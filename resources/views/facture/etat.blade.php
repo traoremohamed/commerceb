@@ -107,8 +107,20 @@ body {
           <td align="right"> {{number_format($Result->prix_ht_fact,'0',',','.')}} </td>
         </tr>
         <tr>
-          <td align="right">Tva : </td>
-          <td align="right"> {{number_format($Result->prix_tva_fact,'0',',','.')}} </td>
+            <?php
+            if ($Result->prix_tva_fact == 0){ ?>
+            <td align="right" nowrap="nowrap">Tva 18% <b style="color: firebrick">TVA NON FACTUREE</b> :</td>
+            <td align="right">
+                <?php       $montt = $Result->prix_ht_fact*0.18;
+                echo number_format($montt,'0',',','.');
+                }else{?>
+            <td align="right" nowrap="nowrap">Tva 18% :</td>
+            <td align="right">
+                <?php
+                echo number_format($Result->prix_tva_fact ,'0',',','.');
+                }
+                ?>
+            </td>
         </tr>
         <tr>
           <td align="right">&nbsp;</td>

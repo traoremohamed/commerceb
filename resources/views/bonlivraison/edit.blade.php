@@ -188,9 +188,9 @@
                                     <td align="right">{{ number_format($res->tot_ttc_lbl,'0',',','.')}}</td>
                                     <td align="center">
                                      <?php if($flagValide != true) { ?>
-                                         <button type="submit" name="action" value="Modifier" class="btn btn-success btn-xs btn-clean btn-icon">
+                                         <!--<button type="submit" name="action" value="Modifier" class="btn btn-success btn-xs btn-clean btn-icon">
                                              <i class="la la-file"></i>
-                                         </button>
+                                         </button>-->
 
                                     <?php } ?>
                                     </td>
