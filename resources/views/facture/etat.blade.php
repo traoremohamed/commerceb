@@ -22,20 +22,21 @@ body {
 </head>
 
 <body>
-<table style="padding-bottom: 300px">
+<table style="padding-bottom: 200px">
 
 </table>
 <div class="container">
-    <div style="text-align: right">
-        <h3>date: {{ Carbon::parse($Result->date_cre_fact)->format('d-m-Y') }}</h3>
-    </div>
-    <div class="row" style="text-align: center">
+
+    <div class="row" >
         <div class="col-lg-6">
             <h2>Facture N°: {{$Result->code_fact}}</h2>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" style="text-align: right">
             <h2> Client : {{$Result->nom_cli .' ' . $Result->prenom_cli}}</h2>
         </div>
+    </div>
+    <div style="text-align: right">
+        <h3>date: {{ Carbon::parse($Result->date_cre_fact)->format('d-m-Y') }}</h3>
     </div>
 </div>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
