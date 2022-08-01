@@ -10,6 +10,7 @@ use Carbon\Carbon;
     @php($Module='Tableau de bord')
     @php($titre='')
     @php($soustitre=' historique des proformats ')
+    @php($titreRoute='comclient')
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Subheader-->
@@ -171,7 +172,7 @@ use Carbon\Carbon;
                                                     <span class="label label-lg font-weight-bold label-default label-inline">Non validé</span>
                                                <?php } ?></td>
                                             <td>{{ Carbon::parse($recherche->date_cre_comc)->format('d/m/Y')}} </td>
-                                            <td><a class="btn btn-primary" href="/detailprofromat/{{$recherche->num_comc}}" target="_blank">Voir+</a></td>
+                                            <td><a class="btn btn-primary" href="{{ route($titreRoute.'edit',\App\Helpers\Crypt::UrlCrypt($recherche->num_comc)) }}" target="_blank">Voir+</a></td>
                                         </tr>
 
                                     <?php endforeach; ?>

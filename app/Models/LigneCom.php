@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property float $num_bl_lcomc
  * @property float $num_prod
+ * @property float $num_agce_vente
  * @property float $num_comc
  * @property float $qte_lcomc
  * @property float $remise_lcomc
@@ -49,7 +50,7 @@ class LigneCom extends Model
     /**
      * @var array
      */
-    protected $fillable = ['num_prod', 'num_comc', 'qte_lcomc',  'remise_lcomc',  'remise_ttc_lcomc', 'prix_ttc_lcomc', 'prix_ht_lcomc', 'prix_tva_lcomc', 'flag_tva_lcomc', 'tot_ttc_lcomc', 'tot_ht_lcomc', 'tot_tva_lcomc', 'created_at', 'updated_at'];
+    protected $fillable = ['num_prod', 'num_agce_vente', 'num_comc', 'qte_lcomc',  'remise_lcomc',  'remise_ttc_lcomc', 'prix_ttc_lcomc', 'prix_ht_lcomc', 'prix_tva_lcomc', 'flag_tva_lcomc', 'tot_ttc_lcomc', 'tot_ht_lcomc', 'tot_tva_lcomc', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

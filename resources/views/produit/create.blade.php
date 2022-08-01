@@ -106,7 +106,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <label>TVA * :</label>
-                                {!! Form::select('flag_tva_prod', [ 0 => 'NON',1 => 'OUI'], 0 ,['class' => 'form-control'] )  !!}
+                                {!! Form::select('flag_tva_prod', [ 1 => 'OUI', 0 => 'NON'], 1 ,['class' => 'form-control'] )  !!}
                                 <span class="form-text text-muted">  </span>
                             </div>
                             <div class="col-lg-2">

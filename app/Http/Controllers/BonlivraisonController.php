@@ -29,7 +29,7 @@ class BonlivraisonController extends Controller
                 inner join commandeclient c on bl.num_comc = c.num_comc
                 inner join agence a on bl.num_agce = a.num_agce
                 inner join client c2 on bl.num_cli = c2.num_cli
-                where left (c.code_comc, 1) = 'B'
+                where left (c.code_comc, 1) = 'B' and bl.flag_bl = false
                       "),
             array(
 
@@ -157,7 +157,7 @@ class BonlivraisonController extends Controller
         }
         $Result = DB::table('bon_livraison as bl')
             ->select('bl.flag_bl','bl.annule_bl','bl.num_bl','code_cli','client.nom_cli','client.prenom_cli','client.tel_cli','client.cel_cli','client.adresse_geo_cli',
-                'bl.num_comc' , 'bl.num_fact' ,'agence.lib_agce','bl.date_cre_bl','bl.date_val_bl','bl.prix_ttc_bl','bl.prix_ht_bl','bl.prix_tva_bl')
+                'bl.num_comc' , 'cpte_contr_cli','bl.num_fact' ,'agence.lib_agce','bl.date_cre_bl','bl.date_val_bl','bl.prix_ttc_bl','bl.prix_ht_bl','bl.prix_tva_bl')
             ->join('commandeclient', 'bl.num_comc', '=', 'commandeclient.num_comc', 'inner')
             ->join('agence', 'bl.num_agce', '=', 'agence.num_agce', 'inner')
             ->join('client', 'bl.num_cli', '=', 'client.num_cli', 'inner')

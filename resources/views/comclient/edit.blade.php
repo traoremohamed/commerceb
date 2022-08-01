@@ -147,7 +147,7 @@
 
                                         }?>
 
-                                    <button type="submit" name="action" value="Valider" class="btn btn-sm btn-success">
+                                    <button onclick='javascript:if (!confirm("Voulez-vous valider la proformat ?")) return false;' type="submit" name="action" value="Valider" class="btn btn-sm btn-success">
                                         Valider
                                     </button>
                                     <?php } ?>
@@ -226,10 +226,19 @@
                                     <td>{{ $res->code_barre_prod }}</td>
                                     <td>{{ $res->lib_prod }}</td>
                                     <td align="center">
-                                        {{ $res->qte_lcomc }}
-                                        <input type="hidden" class="form-control" name="qte_lcomc/{{ $res->code_prod }}" value="{{$res->qte_lcomc}}"/>
+                                        <?php if($flagValide != true) { ?>
+                                            <input type="text" class="form-control" value="{{$res->qte_lcomc}}" name="qte_lcomc/{{ $res->code_prod }}"/>
+                                        <? }else{ ?>
+                                            {{ number_format($res->qte_lcomc ,'0',',','.')}}
+                                        <?php } ?>
                                     </td>
-                                    <td align="center">{{ $res->remise_lcomc }} %</td>
+                                    <td align="center">
+                                        <?php if($flagValide != true) { ?>
+                                            <input type="text" class="form-control" value="{{$res->remise_lcomc}}" name="remise_lcomc/{{ $res->code_prod }}"/>
+                                        <? }else{ ?>
+                                            {{ $res->remise_lcomc }} %
+                                        <?php } ?>
+                                    </td>
                                     <td align="right">
                                         <?php if($flagValide != true) { ?>
                                         <input type="text" class="form-control" value="{{ $res->prix_ht_lcomc  }}" name="prix_ht_lcomc/{{ $res->code_prod }}"/>

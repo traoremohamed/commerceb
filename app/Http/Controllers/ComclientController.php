@@ -25,7 +25,7 @@ class ComclientController extends Controller
                select * from commandeclient c
 inner join agence a on c.num_agce = a.num_agce
 inner join client c2 on c.num_cli = c2.num_cli
-where left (c.code_comc, 1) = 'B'
+where left (c.code_comc, 1) = 'B' and c.flag_comc = false
                       "),
             array(
 
@@ -192,24 +192,46 @@ where left (c.code_comc, 1) = 'B'
                     //($data['num_prod'].$ligneProduit);
                     // Prix de vente normal x (1-Taux de remise (en %)/100) = prix de vente remisé
                     $remisettc = 0;
-                    if ($data['remise_lcomc'] > 0) {
-                        $c = $data['remise_lcomc'] / 100;
-                        $remise = (1 - $c);
-                        $prxRemise = trim($ligneProduit->prix_ttc * $remise);
-                        $remisettc = trim($ligneProduit->prix_ttc - $prxRemise);
-                        /*********** remise ht************/
-                        $prxRemiseht = trim($ligneProduit->prix_ht * $remise);
-                        $remiseht = trim($ligneProduit->prix_ht - $prxRemiseht);
-                        /*********** remise tva ************/
-                        $prxRemisetva = trim(($ligneProduit->prix_ttc-$ligneProduit->prix_ht) * $remise);
-                        $remisetva = trim($ligneProduit->prix_ttc-$ligneProduit->prix_ht - $prxRemisetva);
+                    if (isset($recupclient->taux_remise_cli)){
+                        if ($recupclient->taux_remise_cli > 0) {
+                            $c = $recupclient->taux_remise_cli / 100;
+                            $remise = (1 - $c);
+                            $prxRemise = trim($ligneProduit->prix_ttc * $remise);
+                            $remisettc = trim($ligneProduit->prix_ttc - $prxRemise);
+                            /*********** remise ht************/
+                            $prxRemiseht = trim($ligneProduit->prix_ht * $remise);
+                            $remiseht = trim($ligneProduit->prix_ht - $prxRemiseht);
+                            /*********** remise tva ************/
+                            $prxRemisetva = trim(($ligneProduit->prix_ttc-$ligneProduit->prix_ht) * $remise);
+                            $remisetva = trim($ligneProduit->prix_ttc-$ligneProduit->prix_ht - $prxRemisetva);
 
-                    } else {
-                        $remisettc = 0;
-                        $prxRemise = trim($ligneProduit->prix_ttc);
-                        $prxRemiseht = trim($ligneProduit->prix_ht);
-                        $prxRemisetva = trim($ligneProduit->prix_ttc-$ligneProduit->prix_ht);
+                        } else {
+                            $remisettc = 0;
+                            $prxRemise = trim($ligneProduit->prix_ttc);
+                            $prxRemiseht = trim($ligneProduit->prix_ht);
+                            $prxRemisetva = trim($ligneProduit->prix_ttc-$ligneProduit->prix_ht);
+                        }
+                    }else{
+                        if ($data['remise_lcomc'] > 0) {
+                            $c = $data['remise_lcomc'] / 100;
+                            $remise = (1 - $c);
+                            $prxRemise = trim($ligneProduit->prix_ttc * $remise);
+                            $remisettc = trim($ligneProduit->prix_ttc - $prxRemise);
+                            /*********** remise ht************/
+                            $prxRemiseht = trim($ligneProduit->prix_ht * $remise);
+                            $remiseht = trim($ligneProduit->prix_ht - $prxRemiseht);
+                            /*********** remise tva ************/
+                            $prxRemisetva = trim(($ligneProduit->prix_ttc-$ligneProduit->prix_ht) * $remise);
+                            $remisetva = trim($ligneProduit->prix_ttc-$ligneProduit->prix_ht - $prxRemisetva);
+
+                        } else {
+                            $remisettc = 0;
+                            $prxRemise = trim($ligneProduit->prix_ttc);
+                            $prxRemiseht = trim($ligneProduit->prix_ht);
+                            $prxRemisetva = trim($ligneProduit->prix_ttc-$ligneProduit->prix_ht);
+                        }
                     }
+
                 }else{
                     $ligneProduit = DB::table('produit')
                         ->where('num_prod', '=', $data['num_prod'])
@@ -219,32 +241,59 @@ where left (c.code_comc, 1) = 'B'
                     //($data['num_prod'].$ligneProduit);
                     // Prix de vente normal x (1-Taux de remise (en %)/100) = prix de vente remisé
                     $remisettc = 0;
-                    if ($data['remise_lcomc'] > 0) {
-                        $c = $data['remise_lcomc'] / 100;
-                        $remise = (1 - $c);
-                        $prxRemise = trim($ligneProduit->prix_ht * $remise);
-                        $remisettc = trim($ligneProduit->prix_ht - $prxRemise);
-                        /*********** remise ht************/
-                        $prxRemiseht = trim($ligneProduit->prix_ht * $remise);
-                        $remiseht = trim($ligneProduit->prix_ht - $prxRemiseht);
-                        /*********** remise tva ************/
-                        $prxRemisetva = trim(($ligneProduit->prix_ht-$ligneProduit->prix_ht) * $remise);
-                        $remisetva = trim($ligneProduit->prix_ht-$ligneProduit->prix_ht - $prxRemisetva);
+                    if (isset($recupclient->taux_remise_cli)){
+                        if ($recupclient->taux_remise_cli > 0) {
+                            $c = $recupclient->taux_remise_cli / 100;
+                            $remise = (1 - $c);
+                            $prxRemise = trim($ligneProduit->prix_ht * $remise);
+                            $remisettc = trim($ligneProduit->prix_ht - $prxRemise);
+                            /*********** remise ht************/
+                            $prxRemiseht = trim($ligneProduit->prix_ht * $remise);
+                            $remiseht = trim($ligneProduit->prix_ht - $prxRemiseht);
+                            /*********** remise tva ************/
+                            $prxRemisetva = trim(($ligneProduit->prix_ht-$ligneProduit->prix_ht) * $remise);
+                            $remisetva = trim($ligneProduit->prix_ht-$ligneProduit->prix_ht - $prxRemisetva);
 
-                    } else {
-                        $remisettc = 0;
-                        $prxRemise = trim($ligneProduit->prix_ht);
-                        $prxRemiseht = trim($ligneProduit->prix_ht);
-                        $prxRemisetva = trim($ligneProduit->prix_ht-$ligneProduit->prix_ht);
+                        } else {
+                            $remisettc = 0;
+                            $prxRemise = trim($ligneProduit->prix_ht);
+                            $prxRemiseht = trim($ligneProduit->prix_ht);
+                            $prxRemisetva = trim($ligneProduit->prix_ht-$ligneProduit->prix_ht);
+                        }
+                    }else{
+                        if ($data['remise_lcomc'] > 0) {
+                            $c = $data['remise_lcomc'] / 100;
+                            $remise = (1 - $c);
+                            $prxRemise = trim($ligneProduit->prix_ht * $remise);
+                            $remisettc = trim($ligneProduit->prix_ht - $prxRemise);
+                            /*********** remise ht************/
+                            $prxRemiseht = trim($ligneProduit->prix_ht * $remise);
+                            $remiseht = trim($ligneProduit->prix_ht - $prxRemiseht);
+                            /*********** remise tva ************/
+                            $prxRemisetva = trim(($ligneProduit->prix_ht-$ligneProduit->prix_ht) * $remise);
+                            $remisetva = trim($ligneProduit->prix_ht-$ligneProduit->prix_ht - $prxRemisetva);
+
+                        } else {
+                            $remisettc = 0;
+                            $prxRemise = trim($ligneProduit->prix_ht);
+                            $prxRemiseht = trim($ligneProduit->prix_ht);
+                            $prxRemisetva = trim($ligneProduit->prix_ht-$ligneProduit->prix_ht);
+                        }
                     }
+
                 }
+
 
 
                 $camp = new LigneCom();
                 $camp->num_comc = $idComcli;
                 $camp->num_prod = $ligneProduit->num_prod;
                 $camp->qte_lcomc = trim($data['qte_lcomc']);
-                $camp->remise_lcomc = trim($data['remise_lcomc']);
+                if (isset($recupclient->taux_remise_cli)){
+                    $camp->remise_lcomc = trim($recupclient->taux_remise_cli);
+                }else{
+                    $camp->remise_lcomc = trim($data['remise_lcomc']);
+                }
                 $camp->remise_ttc_lcomc = trim($remisettc);
                 $camp->prix_ttc_lcomc = $prxRemise;
                 $camp->prix_ht_lcomc = $prxRemiseht;
@@ -278,136 +327,301 @@ where left (c.code_comc, 1) = 'B'
                     $form1 =  $data["qte_lcomc/$re->code_prod"];
                     $form2 =  $data["prix_ht_lcomc/$re->code_prod"];
                     $form3 =  $data["prix_ttc_lcomc/$re->code_prod"];
+                    $form4 =  $data["remise_lcomc/$re->code_prod"];
 
-                    if ($infosclient->tva_cli == 1){
+                    $lignecomclientrecp = DB::table('ligne_com')
+                        ->join('produit','ligne_com.num_prod', 'produit.num_prod')
+                        ->where([['produit.code_prod','=',$re->code_prod],['ligne_com.num_comc','=',$idComcli]])
+                        ->first();
 
+                    if ($form4 > 0) {
+                        $c = $form4 / 100;
+                        $remise = (1 - $c);
+                        $prxRemise = trim($form3 * $remise);
+                        $remisettc = trim($form3 - $prxRemise);
+                        /*********** remise ht************/
+                        $prxRemiseht = trim($form2 * $remise);
+                        $remiseht = trim($form2 - $prxRemiseht);
+                        /*********** remise tva ************/
+                        $prxRemisetva = trim(($lignecomclientrecp->prix_ttc_lcomc-$lignecomclientrecp->prix_ht_lcomc) * $remise);
+                        $remisetva = trim($lignecomclientrecp->prix_ttc_lcomc-$lignecomclientrecp->prix_ht_lcomc - $prxRemisetva);
 
-                        $lignecomclientrecp = DB::table('ligne_com')
-                            ->join('produit','ligne_com.num_prod', 'produit.num_prod')
-                            ->where([['produit.code_prod','=',$re->code_prod],['ligne_com.num_comc','=',$idComcli]])
-                            ->first();
-
-                        if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
-
-                            $prixttc = $form3;
-
-                            $prixht = $prixttc - (trim($prixttc)*$tvaval/100);
-
-
-
-                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
-                            //$camp->prix_ttc_lcomfour = $prixttc;
-                            //$camp->prix_tva_lcomfour =
-
-                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
-                                'qte_lcomc' => $form1,
-                                'prix_ht_lcomc' => trim($prixht),
-                                'prix_ttc_lcomc' => trim($prixttc),
-                                'prix_tva_lcomc' =>  trim($prixttc*$tvaval/100),
-                                'tot_ttc_lcomc' => trim($prixttc * $form1),
-                                'tot_ht_lcomc' => trim($prixht * $form1),
-                                'tot_tva_lcomc' => trim(($prixttc*$tvaval/100) * $form1),
-                            ]);
-
-                        }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
-
-                            $prixttc = trim($form2) + (trim($form2)*$tvaval/100);
+                        if ($infosclient->tva_cli == 1){
 
 
+                            if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
 
-                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
-                            //$camp->prix_ttc_lcomfour = $prixttc;
-                            //$camp->prix_tva_lcomfour =
+                                $prixttc = $form3;
 
-                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
-                                'qte_lcomc' => $form1,
-                                'prix_ht_lcomc' => trim($form2),
-                                'prix_ttc_lcomc' => trim($prixttc),
-                                'prix_tva_lcomc' => trim($form2)*$tvaval/100,
-                                'tot_ttc_lcomc' => trim($prixttc * $form1),
-                                'tot_ht_lcomc' => trim($form2 * $form1),
-                                'tot_tva_lcomc' => trim(($form2*$tvaval/100) * $form1),
-                            ]);
+                                $prixht = $form2 - (trim($form2)*$tvaval/100);
+
+                                //$prixttc = $prixht + ;
+
+
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($prixht- $remiseht),
+                                    'prix_ttc_lcomc' => trim((($prixht- $remiseht)*$tvaval/100) + ($prixht- $remiseht)),
+                                    'prix_tva_lcomc' =>  trim(($prixht- $remiseht)*$tvaval/100),
+                                    'tot_ttc_lcomc' => trim(((($prixht- $remiseht)*$tvaval/100) + ($prixht- $remiseht)) * $form1),
+                                    'tot_ht_lcomc' => trim(($prixht- $remiseht) * $form1),
+                                    'tot_tva_lcomc' => trim((($prixht- $remiseht)*$tvaval/100) * $form1),
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+
+                            }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
+
+                                //$htre = $form2-$remiseht;
+                                $prixttc = trim($form2- $remiseht)  + (trim($form2 - $remiseht)*$tvaval/100) ;
+
+
+
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2-$remiseht),
+                                    'prix_ttc_lcomc' => trim($prixttc),
+                                    'prix_tva_lcomc' => trim($form2-$remiseht)*$tvaval/100,
+                                    'tot_ttc_lcomc' => trim($prixttc * $form1),
+                                    'tot_ht_lcomc' => trim(($form2-$remiseht) * $form1),
+                                    'tot_tva_lcomc' => trim((($form2-$remiseht)*$tvaval/100) * $form1),
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }else{
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2-$remiseht),
+                                    'prix_ttc_lcomc' => trim($form3),
+                                    'prix_tva_lcomc' => trim($form2-$remiseht)*$tvaval/100,
+                                    'tot_ttc_lcomc' => trim($form3) * $form1,
+                                    'tot_ht_lcomc' => trim($form2-$remiseht) * $form1,
+                                    'tot_tva_lcomc' => (trim($form2-$remiseht)*$tvaval/100) * $form1,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }
+
+
+
                         }else{
 
-                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
-                                'qte_lcomc' => $form1,
-                                'prix_ht_lcomc' => trim($form2),
-                                'prix_ttc_lcomc' => trim($form3),
-                                'prix_tva_lcomc' => trim($form2)*$tvaval/100,
-                                'tot_ttc_lcomc' => trim($form3) * $form1,
-                                'tot_ht_lcomc' => trim($form2) * $form1,
-                                'tot_tva_lcomc' => (trim($form2)*$tvaval/100) * $form1,
-                            ]);
+
+
+
+                            if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
+
+                                $prixttc = $form3;
+
+                                $prixht = $prixttc - (trim($prixttc)*$tvaval/100);
+
+
+
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($prixttc-$remiseht),
+                                    'prix_ttc_lcomc' => trim($prixttc-$remiseht),
+                                    'prix_tva_lcomc' => 0,
+                                    'tot_ttc_lcomc' => trim($prixttc-$remiseht) * $form1,
+                                    'tot_ht_lcomc' => trim($prixttc-$remiseht) * $form1,
+                                    'tot_tva_lcomc' => 0,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+
+                            }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
+
+                                $prixttc = trim($form2) + (trim($form2)*$tvaval/100);
+
+
+
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2-$remiseht),
+                                    'prix_ttc_lcomc' => trim($form2-$remiseht),
+                                    'prix_tva_lcomc' => 0,
+                                    'tot_ttc_lcomc' => trim($form2-$remiseht) * $form1,
+                                    'tot_ht_lcomc' => trim($form2-$remiseht) * $form1,
+                                    'tot_tva_lcomc' => 0,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }else{
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2-$remiseht),
+                                    'prix_ttc_lcomc' => trim($form2-$remiseht),
+                                    'prix_tva_lcomc' => 0,
+                                    'tot_ttc_lcomc' => trim($form2-$remiseht) * $form1,
+                                    'tot_ht_lcomc' => trim($form2-$remiseht) * $form1,
+                                    'tot_tva_lcomc' => 0,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }
+
+
                         }
 
+                    } else {
+                        $remisettc = 0;
+                        $remiseht = 0;
+                        $prxRemise = trim($lignecomclientrecp->prix_ttc_lcomc);
+                        $prxRemiseht = trim($lignecomclientrecp->prix_ht_lcomc);
+                        $prxRemisetva = trim($lignecomclientrecp->prix_ttc_lcomc-$lignecomclientrecp->prix_ht_lcomc);
 
 
-                    }else{
+                        if ($infosclient->tva_cli == 1){
 
 
-                        $lignecomclientrecp = DB::table('ligne_com')
-                            ->join('produit','ligne_com.num_prod', 'produit.num_prod')
-                            ->where([['produit.code_prod','=',$re->code_prod],['ligne_com.num_comc','=',$idComcli]])
-                            ->first();
+                            if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
 
-                        if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
+                                $prixttc = $form3;
 
-                            $prixttc = $form3;
-
-                            $prixht = $prixttc - (trim($prixttc)*$tvaval/100);
-
-
-
-                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
-                            //$camp->prix_ttc_lcomfour = $prixttc;
-                            //$camp->prix_tva_lcomfour =
-
-                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
-                                'qte_lcomc' => $form1,
-                                'prix_ht_lcomc' => trim($prixttc),
-                                'prix_ttc_lcomc' => trim($prixttc),
-                                'prix_tva_lcomc' => 0,
-                                'tot_ttc_lcomc' => trim($prixttc) * $form1,
-                                'tot_ht_lcomc' => trim($prixttc) * $form1,
-                                'tot_tva_lcomc' => 0,
-                            ]);
-
-                        }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
-
-                            $prixttc = trim($form2) + (trim($form2)*$tvaval/100);
+                                $prixht = $prixttc - (trim($prixttc)*$tvaval/100);
 
 
 
-                            //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
-                            //$camp->prix_ttc_lcomfour = $prixttc;
-                            //$camp->prix_tva_lcomfour =
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
 
-                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
-                                'qte_lcomc' => $form1,
-                                'prix_ht_lcomc' => trim($form2),
-                                'prix_ttc_lcomc' => trim($form2),
-                                'prix_tva_lcomc' => 0,
-                                'tot_ttc_lcomc' => trim($form2) * $form1,
-                                'tot_ht_lcomc' => trim($form2) * $form1,
-                                'tot_tva_lcomc' => 0,
-                            ]);
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($prixht),
+                                    'prix_ttc_lcomc' => trim($prixttc),
+                                    'prix_tva_lcomc' =>  trim($prixttc*$tvaval/100),
+                                    'tot_ttc_lcomc' => trim($prixttc * $form1),
+                                    'tot_ht_lcomc' => trim($prixht * $form1),
+                                    'tot_tva_lcomc' => trim(($prixttc*$tvaval/100) * $form1),
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+
+                            }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
+
+                                $prixttc = trim($form2) + (trim($form2)*$tvaval/100);
+
+
+
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2),
+                                    'prix_ttc_lcomc' => trim($prixttc),
+                                    'prix_tva_lcomc' => trim($form2)*$tvaval/100,
+                                    'tot_ttc_lcomc' => trim($prixttc * $form1),
+                                    'tot_ht_lcomc' => trim($form2 * $form1),
+                                    'tot_tva_lcomc' => trim(($form2*$tvaval/100) * $form1),
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }else{
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2),
+                                    'prix_ttc_lcomc' => trim($form3),
+                                    'prix_tva_lcomc' => trim($form2)*$tvaval/100,
+                                    'tot_ttc_lcomc' => trim($form3) * $form1,
+                                    'tot_ht_lcomc' => trim($form2) * $form1,
+                                    'tot_tva_lcomc' => (trim($form2)*$tvaval/100) * $form1,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }
+
+
+
                         }else{
 
-                            LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
-                                'qte_lcomc' => $form1,
-                                'prix_ht_lcomc' => trim($form2),
-                                'prix_ttc_lcomc' => trim($form2),
-                                'prix_tva_lcomc' => 0,
-                                'tot_ttc_lcomc' => trim($form2) * $form1,
-                                'tot_ht_lcomc' => trim($form2) * $form1,
-                                'tot_tva_lcomc' => 0,
-                            ]);
+
+
+
+                            if ($lignecomclientrecp->prix_ttc_lcomc != $form3){
+
+                                $prixttc = $form3;
+
+                                $prixht = $prixttc - (trim($prixttc)*$tvaval/100);
+
+
+
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($prixttc),
+                                    'prix_ttc_lcomc' => trim($prixttc),
+                                    'prix_tva_lcomc' => 0,
+                                    'tot_ttc_lcomc' => trim($prixttc) * $form1,
+                                    'tot_ht_lcomc' => trim($prixttc) * $form1,
+                                    'tot_tva_lcomc' => 0,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+
+                            }elseif ($lignecomclientrecp->prix_ht_lcomc != $form2){
+
+                                $prixttc = trim($form2) + (trim($form2)*$tvaval/100);
+
+
+
+                                //$camp->prix_ht_lcomfour = trim($data['prix_ttc_lcomfour']);
+                                //$camp->prix_ttc_lcomfour = $prixttc;
+                                //$camp->prix_tva_lcomfour =
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2),
+                                    'prix_ttc_lcomc' => trim($form2),
+                                    'prix_tva_lcomc' => 0,
+                                    'tot_ttc_lcomc' => trim($form2) * $form1,
+                                    'tot_ht_lcomc' => trim($form2) * $form1,
+                                    'tot_tva_lcomc' => 0,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }else{
+
+                                LigneCom::where([['num_prod', '=', $form],['num_comc', '=', $idComcli]])->update([
+                                    'qte_lcomc' => $form1,
+                                    'prix_ht_lcomc' => trim($form2),
+                                    'prix_ttc_lcomc' => trim($form2),
+                                    'prix_tva_lcomc' => 0,
+                                    'tot_ttc_lcomc' => trim($form2) * $form1,
+                                    'tot_ht_lcomc' => trim($form2) * $form1,
+                                    'tot_tva_lcomc' => 0,
+                                    'remise_lcomc' => $form4,
+                                    'remise_ttc_lcomc' => $remiseht,
+                                ]);
+                            }
+
+
                         }
-
-
                     }
-
 
 
                 endforeach;

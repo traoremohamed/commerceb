@@ -92,7 +92,7 @@ use Carbon\Carbon;
                             </div>
                             <div class="col-lg-2">
                                 <label>Taux de marque:</label>
-                                <?php $tm =0 ; if($produit->prix_ttc!=0) $tm =$produit->prix_revient_prod/$produit->prix_ttc;  ?> 
+                                <?php $tm =0 ; if($produit->prix_ttc!=0) $tm =$produit->prix_revient_prod/$produit->prix_ttc;  ?>
                                 {!! Form::text('taux_marque', $tm  , ['placeholder' => '0 ','class' => 'form-control','disabled' => 'disabled']) !!}
                                 <span class="form-text text-muted">  </span>
                             </div>
@@ -180,9 +180,9 @@ use Carbon\Carbon;
 
                                         <div class="card-body">
                                             @if (count($recherches)==0)
-                                            <div class="alert alert-custom alert-warning fade show" role="alert">
+                                            <div class="alert alert-custom alert-primary fade show" role="alert">
                                                 <div class="alert-text">
-                                                    <strong>Echec :</strong> Il n'y a pas eu de mouvement sur ce produit
+                                                    <strong>Info: </strong>Aucun mouvement sur ce produit
                                                 </div>
                                                 <div class="alert-close">
                                                     <button type="button" class="btn-sx close" data-dismiss="alert" aria-label="Close">

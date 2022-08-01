@@ -62,9 +62,12 @@ body {
         <td> <br/></td>
     </tr>
     <tr>
-        <td>FACTURE PROFORMA N°: {{$Result->code_comc}}</td>
+        <td>FACTURE PROFORMA N°: {{$Result->code_comc}} <br>Date : {{ Carbon::parse($Result->date_cre_comc)->format('d/m/Y') }} </td>
         <td><strong style="font-size: 40px; align-content: center"></strong></td>
         <td></td>
+    </tr>
+    <tr>
+        <td> <br/></td>
     </tr>
 
     <tr>
@@ -84,7 +87,13 @@ body {
         <td></td>
         <td></td>
         <td></td>
-        <td>Date : {{ Carbon::parse($Result->date_cre_comc)->format('d/m/Y') }}</td>
+        <td>N°contribuable : {{ $Result->cpte_contr_cli }}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>contact : {{ $Result->tel_cli }} / {{ $Result->tel_cli }}</td>
     </tr>
 
 

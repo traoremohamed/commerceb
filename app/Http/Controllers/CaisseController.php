@@ -153,6 +153,7 @@ class CaisseController extends Controller
 
                     $camp = new LigneCom();
                     $camp->num_comc = $idCombl;
+                    $camp->num_agce_vente = $idAgceCon;
                     $camp->num_prod = $ligneProduit->num_prod;
                     $camp->qte_lcomc = trim($data['qte_lcomc']);
                     $camp->remise_lcomc = trim($data['remise_lcomc']);
@@ -250,12 +251,32 @@ class CaisseController extends Controller
         foreach ($Produit as $comp) {
             $ProduitList .= "<option value='" . $comp->num_prod . "' >" . $comp->code_prod . ' : ' . $comp->lib_prod . "</option>";
         }
+        $idAgceCon = Auth::user()->num_agce;
 
         return view('caisse.ventecaisse',
             compact(
                 'flagValide','ModepaieList','flagsolde',
-                'flagAnnule', 'Result',  'ligneResult',  'ligneResultReg','ProduitList','idCombl','idNumfact'
+                'flagAnnule', 'Result',  'ligneResult',  'ligneResultReg','ProduitList','idCombl','idNumfact','idAgceCon'
             ));
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request, $id = null)
+    {
+
+        $idLcomf = Crypt::UrldeCrypt($id);
+        $ligneComCli = DB::table('ligne_com')
+            ->where('num_bl_lcomc', '=', $idLcomf)
+            ->first();
+        DB::table('ligne_com')->where('num_bl_lcomc', $idLcomf)->delete();
+        return redirect('/ventecaisse/edit/' . Crypt::UrlCrypt($ligneComCli->num_comc))->with('success', 'Succes : Suppression reussi ');
+
     }
 
     /**

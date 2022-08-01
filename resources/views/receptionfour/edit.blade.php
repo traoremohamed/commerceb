@@ -136,7 +136,7 @@
                                     <button type="submit" name="action" value="Annuler"
                                             class="btn btn-sm btn-danger">Annuler
                                     </button>
-                                    <button type="submit" name="action" value="Valider" class="btn btn-sm btn-success">
+                                    <button onclick='javascript:if (!confirm("Voulez-vous Faire l entree en stock ?")) return false;' type="submit" name="action" value="Valider" class="btn btn-sm btn-success">
                                         Valider
                                     </button>
                                     <?php } ?>
@@ -168,6 +168,7 @@
                                 <th>Total ttc</th>
                                 <th>Prix ht de vente unitaire</th>
                                 <th>Prix ttc de vente unitaire</th>
+                                <th>Taux de marque</th>
                                 <th>Action</th>
                             </tr>
 
@@ -199,9 +200,10 @@
                                     <td align="right">{{ number_format($res->tot_tva_lbr,'0',',','.')}}</td>
                                     <td align="right">{{ number_format($res->tot_ttc_lbr,'0',',','.')}}</td>
                                     <td align="right">
-                                        <input type="text" class="form-control" name="prix_vente/{{ $res->code_prod }}" value="{{ number_format($res->prix_ht,'0',',','.')}}"/>
+                                        <input type="text" class="form-control" name="prix_vente/{{ $res->code_prod }}" value="{{$res->prix_ht}}"/>
                                     </td>
                                     <td align="right">{{ number_format($res->prix_ttc,'0',',','.')}}</td>
+                                    <td align="right">{{ $res->taux_marque }}</td>
                                     <td align="center">
                                         <?php if($flagValide != true) { ?>
                                       <button type="submit" name="action" value="Modifier" class="btn btn-success btn-xs btn-clean btn-icon">

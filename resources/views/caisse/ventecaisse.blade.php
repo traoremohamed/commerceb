@@ -114,9 +114,9 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-lg-12 text-right">
-                                @can('role-create')
+                                @can('vente-direct')
                                   <?php if($idNumfact != null){ ?>
-                                    <a class="btn btn-sm btn-secondary" href="{{route('ventecaisse')}}"> Nouvelle paiement</a>
+                                    <a class="btn btn-sm btn-secondary" href="{{route('ventecaisse')}}"> Nouveau paiement</a>
 
                                         <a class="btn btn-sm btn-info"
                                        onclick="NewWindow('{{ route('recucaisse',\App\Helpers\Crypt::UrlCrypt($idNumfact))}}','',screen.width,screen.height,'yes','center',1);">
@@ -223,7 +223,7 @@
                                         <td align="right">{{ number_format($res->tot_ttc_lcomc ,'0',',','.')}}</td>
                                         <td align="center">
                                             <?php if($flagValide != true) { ?>
-                                                <a href="{{ route('comfourdelete',\App\Helpers\Crypt::UrlCrypt($res->num_bl_lcomc)) }}"
+                                                <a href="{{ route('ventecaissedelete',\App\Helpers\Crypt::UrlCrypt($res->num_bl_lcomc)) }}"
                                                    class="btn btn-danger btn-xs btn-clean btn-icon"
                                                    title="Suprimer"> <i class="la la-trash"></i> </a>
                                             <?php } ?>
@@ -267,6 +267,8 @@
 
                                 <input type="hidden" name="num_fact" id="num_fact" class="form-control"
                                        value="{{$Result->num_fact}}">
+                                    <input type="hidden" name="num_agce" id="num_agce" class="form-control"
+                                           value="{{$idAgceCon}}">
                                 <?php } ?>
                                 <table class="table table-bordered table-hover table-checkable"
                                        style="margin-top: 13px !important">

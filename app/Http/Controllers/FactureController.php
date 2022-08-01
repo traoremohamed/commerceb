@@ -30,7 +30,7 @@ class FactureController extends Controller
                 inner join commandeclient c on bl.num_comc = c.num_comc
                 inner join agence a on bl.num_agce = a.num_agce
                 inner join client c2 on bl.num_cli = c2.num_cli
-                where left (c.code_comc, 1) = 'B'
+                where left (c.code_comc, 1) = 'B' and f.solde_fact = false
                       "),
             array(
 
@@ -149,7 +149,7 @@ class FactureController extends Controller
         }
         $Result = DB::table('facture as fa')
             ->select('fa.flag_fact','fa.annule_fact', 'bl.num_bl','code_cli','client.nom_cli','client.prenom_cli','client.tel_cli','client.cel_cli','client.adresse_geo_cli',
-                'fa.code_fact',  'fa.solde_fact', 'fa.num_fact' ,'agence.lib_agce','fa.date_cre_fact','fa.date_val_fact','fa.prix_ttc_fact','fa.prix_tva_fact','fa.prix_ht_fact','code_comc')
+                'fa.code_fact', 'cpte_contr_cli', 'fa.solde_fact', 'fa.num_fact' ,'agence.lib_agce','fa.date_cre_fact','fa.date_val_fact','fa.prix_ttc_fact','fa.prix_tva_fact','fa.prix_ht_fact','code_comc')
             ->join('bon_livraison as bl', 'fa.num_bl', '=', 'bl.num_bl', 'inner')
             ->join('commandeclient', 'bl.num_comc', '=', 'commandeclient.num_comc', 'inner')
             ->join('agence', 'fa.num_agce', '=', 'agence.num_agce', 'inner')
