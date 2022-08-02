@@ -67,7 +67,7 @@
 											<span class="card-icon">
 												<i class="flaticon2-favourite text-primary"></i>
 											</span>
-                            <h3 class="card-label">{{$soustitre}} </h3>
+                            <h3 class="card-label">{{$soustitre}} / Code produit : {{$codeProd}}</h3>
                         </div>
                     </div>
                     {!! Form::open(array('route' => $titreRoute.'.store','method'=>'POST')) !!}
