@@ -10,6 +10,7 @@ use Carbon\Carbon;
     @php($Module='Tableau de bord')
     @php($titre='')
     @php($soustitre=' historique des bon de livraison ')
+    @php($titreRoute='bonlivraison')
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Subheader-->
@@ -171,7 +172,7 @@ use Carbon\Carbon;
                                                     <span class="label label-lg font-weight-bold label-default label-inline">Non validé</span>
                                                <?php } ?></td>
                                             <td>{{ Carbon::parse($recherche->date_val_bl)->format('d/m/Y')}} </td>
-                                            <td><a class="btn btn-primary" href="/detailbonlivraison/{{$recherche->num_bl}}" target="_blank">Voir+</a></td>
+                                            <td><a class="btn btn-primary" href="{{ route($titreRoute.'edit',\App\Helpers\Crypt::UrlCrypt($recherche->num_bl)) }}" target="_blank">Voir+</a></td>
                                         </tr>
 
                                     <?php endforeach; ?>

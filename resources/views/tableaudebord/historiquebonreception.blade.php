@@ -10,6 +10,7 @@ use Carbon\Carbon;
     @php($Module='Tableau de bord')
     @php($titre='')
     @php($soustitre=' historique des bons de receptions ')
+    @php($titreRoute='receptionfour')
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Subheader-->
@@ -175,7 +176,7 @@ use Carbon\Carbon;
                                                     <span class="label label-lg font-weight-bold label-danger label-inline">Rejeté</span>
                                                 <?php } ?></td>
                                             <td>{{ Carbon::parse($recherche->date_cre_br)->format('d/m/Y')}} </td>
-                                            <td><a class="btn btn-primary" href="/detailbonreception/{{$recherche->num_br}}" target="_blank">Voir+</a></td>
+                                            <td><a class="btn btn-primary" href="{{ route($titreRoute.'edit',\App\Helpers\Crypt::UrlCrypt($recherche->num_br)) }}" target="_blank">Voir+</a></td>
 
                                         </tr>
 
