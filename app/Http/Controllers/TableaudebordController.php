@@ -386,7 +386,7 @@ class TableaudebordController extends Controller
             $recherches =  DB::select(
                 DB::raw(
                     "select left (c.code_comc, 1) as code, f.solde_fact, f.flag_fact, f.prix_ttc_fact , bl.date_val_bl ,
-                            c.code_comc , c.solde_comc, c2.nom_cli , c2.prenom_cli
+                            c.code_comc , c.solde_comc, c2.nom_cli , c2.prenom_cli, f.num_fact
                             from facture f
                             inner join bon_livraison bl on f.num_bl = bl.num_bl
                             inner join commandeclient c on bl.num_comc = c.num_comc
@@ -844,6 +844,115 @@ class TableaudebordController extends Controller
 
         return view('tableaudebord.detailprofromat',compact(
             'Resultat'
+        ));
+    }
+
+    public function ristourne(Request $request){
+
+
+        $recherches = '';
+        $date1=0;
+        $date2=0;
+        $Agence1=0;
+
+
+        if ($request->isMethod('post')) {
+
+            $data = $request->all();
+
+            //  dd($data);
+
+            $condition = '';
+
+            if (isset($data['date1'])) {
+                $date1 = $data['date1'];
+                $condition = $condition . ' and  lc.created_at > ' . "'$date1'";
+            }
+
+            if (isset($data['date2'])) {
+                $date2 = $data['date2'];
+                $condition = $condition . '  and lc.created_at < ' . "'$date2'";
+            }
+
+
+            if (isset($data['prod'])) {
+                $Agence1 = $data['prod'];
+                //$condition = $condition . ' and a.num_agce = ' . $TClientList1;
+            }
+
+
+            $recherches =  DB::select(
+                DB::raw(
+                    "select a.lib_agce, a.num_agce , lc.qte_lcomc, lc.tot_ttc_lcomc , p.lib_prod ,  lc.created_at  from agence a
+                            inner join ligne_com lc on a.num_agce = lc.num_agce_vente
+                            inner join produit p on p.num_prod =lc.num_prod
+                            where a.num_agce =:numagence" . $condition . "
+                        "),
+                    array(
+                        'numagence'=> $data['prod']
+                    )
+            );
+
+            //dd($recherches);
+            if(count($recherches)==0){
+
+                return redirect('/ristourne')
+                    ->with('errors', 'Aucun resultat trouvés');
+            }
+
+        }
+
+        $Agences= DB::table('agence')->get();
+
+        $Agence = "<option value='' > Sélectionner </option>";
+        foreach ($Agences as $comp) {
+            $Agence .= "<option value='" . $comp->num_agce . "'      >" . $comp->lib_agce . ' : Taux de ristourne (' . $comp->taux_ristourne_cli . ')'. "</option>";
+        }
+
+        //dd($Agence);
+
+        return view('tableaudebord.ristourne', compact(
+            'Agence','recherches', 'date1', 'date2','Agence1'
+        ));
+    }
+
+    public function  apercueristourne($id=null, $id1=null, $id2=null){
+
+
+        $condition = '';
+
+        if ($id != 0) {
+            $date1 = $id;
+            $condition = $condition . ' and  lc.created_at > ' . "'$date1'";
+        }
+
+        if ($id1 != 0) {
+            $date2 = $id1;
+            $condition = $condition . ' and  lc.created_at < ' . "'$date2'";
+        }
+
+
+
+        if ($id2 != 0) {
+            $Agence1 = $id2;
+            //$condition = $condition . ' and c.num_cli = ' . $TClientList1;
+        }
+
+
+        $recherches =  DB::select(
+            DB::raw(
+                "select a.lib_agce, a.num_agce , lc.qte_lcomc, lc.tot_ttc_lcomc , p.lib_prod ,  lc.created_at  from agence a
+                            inner join ligne_com lc on a.num_agce = lc.num_agce_vente
+                            inner join produit p on p.num_prod =lc.num_prod
+                            where a.num_agce =:numagence" . $condition . "
+                        "),
+            array(
+                'numagence'=> $Agence1
+            )
+        );
+
+        return view('tableaudebord.apercueristourne',compact(
+            'recherches', 'id', 'id1', 'Agence1'
         ));
     }
 

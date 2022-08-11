@@ -170,6 +170,8 @@ use Carbon\Carbon;
                                                     <span class="label label-lg font-weight-bold label-default label-inline">Non soldé</span>
                                                <?php } ?></td>
                                             <td>{{ Carbon::parse($recherche->date_val_bl)->format('d/m/Y')}} </td>
+                                            <td><a class="btn btn-warning btn-xs btn-clean btn-icon"
+                                                   title="Modifier" href="{{ route('factureedit',\App\Helpers\Crypt::UrlCrypt($recherche->num_fact)) }}" target="_blank"><i class="la la-edit"></i> </a></td>
                                         </tr>
 
                                     <?php endforeach; ?>

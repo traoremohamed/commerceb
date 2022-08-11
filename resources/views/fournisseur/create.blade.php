@@ -130,7 +130,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <label>Tva :</label>
-                                {!! Form::select('flag_tva_fourn', [true => 'Actif', false => 'Inactif',], true ,['class' => 'form-control'] )  !!}
+                                {!! Form::select('flag_tva_fourn', [true => 'OUI', false => 'NON',], true ,['class' => 'form-control'] )  !!}
                                 <span class="form-text text-muted">  </span>
                             </div>
 

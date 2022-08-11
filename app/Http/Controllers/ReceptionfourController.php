@@ -91,7 +91,7 @@ class ReceptionfourController extends Controller
 
             if ($data['action'] === 'Modifier') {
 
-               // dd($data);
+                //dd($data);
 
                 $ligneReceptionfour = DB::table('ligne_br')
                     ->join('produit', 'ligne_br.num_prod', '=', 'produit.num_prod', 'inner')

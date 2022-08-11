@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::match(['get', 'post'], '/ventecaisse/edit/{id}', [App\Http\Controllers\CaisseController::class, 'ventecaisse'])->name('ventecaissedirect');
     Route::match(['get', 'post'], '/ventecaisse/edit/{id}/{id1}', [App\Http\Controllers\CaisseController::class, 'ventecaisse'])->name('ventecaissedirectfact');
     Route::match(['get'], '/ventecaisse/recu/{id}', [App\Http\Controllers\CaisseController::class, 'etat'])->name('recucaisse');
+    Route::match(['get'], '/ventecaisse/delete/{id}', [App\Http\Controllers\CaisseController::class, 'delete'])->name('ventecaissedelete');
 //-------------route parametrage logo et nom de l'application------------------------------
     Route::match(['get', 'post'], '/logo', [App\Http\Controllers\ParametreController::class, 'logo'])->name('logo');
     Route::match(['get', 'post'], '/creerlogo', [App\Http\Controllers\ParametreController::class, 'creerlogo'])->name('creerlogo');
@@ -104,6 +105,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::match(['get', 'post'], '/historiquebonreception', [App\Http\Controllers\TableaudebordController::class, 'historiquebonreception'])->name('historiquebonreception');
     Route::match(['get', 'post'], '/historiqueproformat', [App\Http\Controllers\TableaudebordController::class, 'historiqueproformat'])->name('historiqueproformat');
     Route::match(['get', 'post'], '/historiquebonlivraison', [App\Http\Controllers\TableaudebordController::class, 'historiquebonlivraison'])->name('historiquebonlivraison');
+    Route::match(['get', 'post'], '/ristourne', [App\Http\Controllers\TableaudebordController::class, 'ristourne'])->name('ristourne');
 
 //-------------- route statistique apercu
 
@@ -115,6 +117,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::match(['get', 'post'], '/apercuehistoriqueproformat/{id}/{id1}/{id2}/{id3}', [App\Http\Controllers\TableaudebordController::class, 'apercuehistoriqueproformat'])->name('apercuehistoriqueproformat');
     Route::match(['get', 'post'], '/apercuehistoriquebonlivraison/{id}/{id1}/{id2}/{id3}', [App\Http\Controllers\TableaudebordController::class, 'apercuehistoriquebonlivraison'])->name('apercuehistoriquebonlivraison');
     Route::match(['get', 'post'], '/apercuehistoriqueventeindirecte/{id}/{id1}/{id2}/{id3}', [App\Http\Controllers\TableaudebordController::class, 'apercuehistoriqueventeindirecte'])->name('apercuehistoriqueventeindirecte');
+    Route::match(['get', 'post'], '/apercueristourne/{id}/{id1}/{id2}', [App\Http\Controllers\TableaudebordController::class, 'apercueristourne'])->name('apercueristourne');
     Route::match(['get', 'post'], '/detailbonreception/{id}', [App\Http\Controllers\TableaudebordController::class, 'detailbonreception'])->name('detailbonreception');
     Route::match(['get', 'post'], '/detailbonlivraison/{id}', [App\Http\Controllers\TableaudebordController::class, 'detailbonlivraison'])->name('detailbonlivraison');
     Route::match(['get', 'post'], '/detailprofromat/{id}', [App\Http\Controllers\TableaudebordController::class, 'detailprofromat'])->name('detailprofromat');

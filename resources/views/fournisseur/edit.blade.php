@@ -133,8 +133,8 @@
                             <div class="col-lg-2">
                                 <label>Tva :</label>
                                 <select name="flag_tva_fourn" class="form-control ">
-                                    <option value=true @if($fournisseur->flag_tva_fourn == true ) selected @endif>Actif</option>
-                                    <option value=false  @if($fournisseur->flag_tva_fourn == false) selected @endif>Inactif</option>
+                                    <option value=true @if($fournisseur->flag_tva_fourn == true ) selected @endif>OUI</option>
+                                    <option value=false  @if($fournisseur->flag_tva_fourn == false) selected @endif>NON</option>
                                 </select>
                             </div>
 

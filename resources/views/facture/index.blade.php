@@ -76,6 +76,7 @@
                                 <th>Agence</th>
                                 <th>Montant ttc</th>
                                 <th>Statut</th>
+                                <th>Statut Solde</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -97,6 +98,13 @@
                                         <span class="label label-lg font-weight-bold label-default label-inline">En cours</span>
                                         <?php } elseif ( $res->annule_fact == true) { ?>
                                             <span class="label label-lg font-weight-bold label-danger label-inline">Annulé</span>
+                                        <?php }  ?>
+                                    </td>
+                                    <td align="center">
+                                        <?php if($res->solde_fact == true ){ ?>
+                                            <span  class="label label-lg font-weight-bold label-success label-inline"> Soldé</span>
+                                        <?php  }elseif($res->solde_fact == false){?>
+                                            <span class="label label-lg font-weight-bold label-default label-inline">Non Soldé</span>
                                         <?php }  ?>
                                     </td>
                                     <td align="center">

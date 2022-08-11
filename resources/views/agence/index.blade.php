@@ -76,6 +76,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Libelle</th>
+                                <th>Taux de ristourne</th>
                                 <th>Statut</th>
                                 <th>Action</th>
                             </tr>
@@ -85,6 +86,7 @@
                                 <tr>
                                     <td>{{ $res->num_agce }}</td>
                                     <td>{{ $res->lib_agce }}</td>
+                                    <td>{{ $res->taux_ristourne_cli }}</td>
                                     <td align="center">
                                         <?php if($res->flag_agce == true){ ?>
                                         <span  class="label label-lg font-weight-bold label-success label-inline"> Actif</span>

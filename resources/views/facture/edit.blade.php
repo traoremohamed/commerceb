@@ -237,7 +237,7 @@
 
                                         <td align="center">
 
-                                            <button type="submit" name="action" value="Payer"
+                                            <button onclick='javascript:if (!confirm("Voulez-vous valider la proformat ?")) return false;' type="submit" name="action" value="Payer"
                                                     class="btn btn-sm btn-primary">Payer
                                             </button>
 

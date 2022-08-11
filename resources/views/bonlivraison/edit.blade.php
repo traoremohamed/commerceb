@@ -139,7 +139,7 @@
                                     <button type="submit" name="action" value="Annuler"
                                             class="btn btn-sm btn-danger">Annuler
                                     </button>
-                                    <button type="submit" name="action" value="Valider" class="btn btn-sm btn-success">
+                                    <button onclick='javascript:if (!confirm("Voulez-vous valider le bon de livraison ?")) return false;' type="submit" name="action" value="Valider" class="btn btn-sm btn-success">
                                         Valider
                                     </button>
                                     <?php } ?>

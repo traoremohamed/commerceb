@@ -155,6 +155,25 @@
                             </select>
                             </div>
 
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <div class="col-lg-6">
+                                <label>Taux de reduction (en <strong style="color: red"> %</strong>) : </label>
+                                {!! Form::number('taux_remise_cli', $client->taux_remise_cli, array('placeholder' => '10 %','class' => 'form-control')) !!}
+                                <span class="form-text text-muted">  </span>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label>Applique ristourne :</label>
+                                <select name="ristourne_cli" class="form-control  ">
+                                    <option value=1 @if($client->ristourne_cli == 1 ) selected @endif>OUI</option>
+                                    <option value=0  @if($client->ristourne_cli == 0) selected @endif>NON</option>
+                                </select>
+
+                            </div>
                         </div>
 
 

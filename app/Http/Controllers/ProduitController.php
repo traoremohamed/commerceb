@@ -38,7 +38,8 @@ class ProduitController extends Controller
         foreach ($TSfam as $comp) {
             $TSfamList .= "<option value='" . $comp->num_sousfam . "'      >" . $comp->lib_sousfam . "</option>";
         }
-        $codeProd = 'P-' . Gencode::randStrGen(4, 6);
+        //$codeProd = 'P-' . Gencode::randStrGen(4, 6);
+        $codeProd = Gencode::randStrGen(4, 6);
         return view('produit.create', compact('TSfamList', 'codeProd'));
     }
 

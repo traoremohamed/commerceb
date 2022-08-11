@@ -2,6 +2,8 @@
 
 use App\Helpers\Menu;
 
+use Carbon\Carbon;
+
 $logo = Menu::get_logo();
 
 ?>
@@ -11,52 +13,92 @@ $logo = Menu::get_logo();
 <meta charset="utf-8">
         <title>FACTURE PROFORMA</title>
 	<style>
+        @page {
+            size: portrait;
+        }
 body {
 	family: Arial, Helvetica ;
 	font-size: 15px;
 }
+
 </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 
 <body>
 <div style="padding: 30px">
 
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<table width="100%" border="0" cellpadding="" cellspacing="">
   <tbody>
+
+    <tr>
+        <td> <br/></td>
+    </tr>
     <tr style="border: 12px solid black;">
-        <td style="padding: 30px;border-bottom: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;">
-            <?php if(isset($logo->logo_logo)){?>
-                <img alt="Logo" height="100" src="{{ asset('/frontend/logo/'. $logo->logo_logo)}}"/>
-            <?php } ?>
 
-        </td>
+            <div class="col-lg-12" style="padding: 5px; width: 100%; border-bottom: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;">
+                <div class="row">
+                    <div class="col-lg-2">
 
-        <td nowrap="nowrap" style="text-align: right;padding: 30px;border-bottom: 1px solid black;border-top: 1px solid black;border-right: 1px solid black;">
-            <?php if(isset($logo->logo_logo)){?>
-                <strong STYLE="font-size: 80px"><?php echo $logo->mot_cle;?></strong>
-            <?php } ?>
-        </td>
+
+                            <img alt="Logo" sizes="70px" src="{{ asset('/UBCIIMAGE.png')}}"/>
+
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+    </tr>
+    <tr>
+        <td> <br/></td>
+    </tr>
+    <tr>
+        <td>FACTURE PROFORMA N°: {{$Result->code_comc}} <br>Date : {{ Carbon::parse($Result->date_cre_comc)->format('d/m/Y') }} </td>
+        <td><strong style="font-size: 40px; align-content: center"></strong></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td> <br/></td>
+    </tr>
+
+    <tr>
+      <td></td>
+        <td nowrap="nowrap"></td>
+    </tr>
+    <tr>
+        <td> <br/></td>
+    </tr>
+    <tr>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td>{{$Result->nom_cli .' ' . $Result->prenom_cli}}</td>
     </tr>
     <tr>
         <td></td>
-        <td><strong style="font-size: 40px; align-content: center">FACTURE PROFORMA</strong></td>
         <td></td>
-    </tr>
-
-    <tr>
-      <td>Abidjan le </td>
-        <td nowrap="nowrap">{{ $Result->date_cre_comc }}</td>
+        <td></td>
+        <td>N°contribuable : {{ $Result->cpte_contr_cli }}</td>
     </tr>
     <tr>
-        <td>PROFORMA N°</td>
-        <td>{{$Result->code_comc}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>contact : {{ $Result->tel_cli }} / {{ $Result->tel_cli }}</td>
     </tr>
 
-    <tr style="border: 1px solid black">
-      <td width="75px">&nbsp;</td>
-      <td width="25px" align="right"> {{$Result->nom_cli .' ' . $Result->prenom_cli}}</td>
-    </tr>
+
+
+
   </tbody>
 </table>
 <!--<div align="right">

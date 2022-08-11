@@ -74,13 +74,13 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label>Libellé :</label>
                                 {!! Form::text('lib_agce',  $agence->lib_agce , ['placeholder' => 'Libellé ','class' => 'form-control','required' => 'required']) !!}
                                 <span class="form-text text-muted">  </span>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label>Statut :</label>
                                 <select name="flag_agce" class="form-control  ">
                                     <option value=true @if($agence->flag_agce == true ) selected @endif>Actif</option>
@@ -88,6 +88,12 @@
                                 </select>
 
 
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label>Taux de ristourne (en <strong style="color: red"> %</strong>) : </label>
+                                {!! Form::number('taux_ristourne_cli', $agence->taux_ristourne_cli, array('placeholder' => '10 %','class' => 'form-control')) !!}
+                                <span class="form-text text-muted">  </span>
                             </div>
                         </div>
 
